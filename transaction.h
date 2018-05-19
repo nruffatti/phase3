@@ -6,16 +6,17 @@
 using namespace std;
 
 class Transaction {
-	public:
-		Transaction();
+public:
+    Transaction();
 
-		Transaction(string customerID, string orderID);
+    Transaction(string customerID, string employeeID, string orderID);
 
-		string getOrderID();
-		string getCustomerID();
+    string getOrderID();
+    string getCustomerID();
+    string getEmployeeID();
 
-	private:
-		string orderID, customerID;
+private:
+    string orderID, customerID, employeeID;
 };
 
 #endif

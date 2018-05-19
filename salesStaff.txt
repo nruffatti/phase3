@@ -1,0 +1,15 @@
+Supervisor;Sebastian Vance;500009;500010;
+Sales;Christian Dyer;500011;500015;
+Sales;Christopher Edmunds;500002;500005;
+Supervisor;Adrian Davies;500005;500010;
+SuperSales;Brian Turner;500014;500015;
+SuperSales;Audrey Greene;500004;500005;
+Sales;Evan Peake;500007;500009;
+Manager;Amanda Vance;500010;000000;
+Sales;Irene Gibson;500006;500009;
+SuperSales;Wendy Alsop;500012;500015;
+SuperSales;Alexander Scott;500013;500015;
+Supervisor;Ava Kelly;500015;500010;
+Sales;Christopher Rees;500001;500005;
+SuperSales;Joe Miller;500003;500005;
+Sales;Karen Kerr;500008;500009;

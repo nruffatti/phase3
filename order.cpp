@@ -42,5 +42,4 @@ string Order::to_string() {
 
     line = stream.str();
     return line;
-
 }

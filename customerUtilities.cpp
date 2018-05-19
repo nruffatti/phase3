@@ -1,5 +1,5 @@
 /* 
- * File:   customerUtility.cpp
+ * File:   customerUtilities.cpp
  * Author: Hai Le, Nathan Ruffatti
  * 
  * Created on April 22, 2018, 2:24 PM

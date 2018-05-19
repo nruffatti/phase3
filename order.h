@@ -6,21 +6,21 @@
 using namespace std;
 
 class Order {
-	public:
-		Order();
-		Order(string orderID, string date, int quantity, float amountPaid);
+public:
+    Order();
+    Order(string orderID, string date, int quantity, float amountPaid);
 
-		string getOrderID();
-		string getDate();
-		int getQuantity();
-		float getAmountPaid();
+    string getOrderID();
+    string getDate();
+    int getQuantity();
+    float getAmountPaid();
 
-		string to_string();
+    string to_string();
 
-	private:
-		string date, orderID;
-		int quantity;
-		float amountPaid;
+private:
+    string date, orderID;
+    int quantity;
+    float amountPaid;
 };
 
 #endif

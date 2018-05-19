@@ -16,12 +16,17 @@
 #include <vector>
 #include <iomanip>
 
-#include "part1.h"
 #include "customer.h"
 #include "customerUtilities.h"
 #include "data.h"
 #include "order.h"
 #include "transaction.h"
+#include "employee.h"
+#include "employeeUtilities.h"
+#include "Sales.h"
+#include "SuperSales.h"
+#include "Supervisors.h"
+#include "Managers.h"
 
 using namespace std;
 
@@ -75,6 +80,7 @@ int main(int argc, char** argv) {
     Customer * newCustomer;
     Order * newOrder;
     Transaction * newTransaction;
+    Employee * newEmployee;
 
     //data storage
     vector<Customer *> customerList;
@@ -82,50 +88,22 @@ int main(int argc, char** argv) {
     vector<Order *> orderList;
     vector<Transaction *> transactionList;
     vector<float> prices;
+    vector<Employee *> employeeList;
 
     vector<int> foundList; // to store the index of found records with duplicate name
     vector<string> orderFoundList; // to store order IDs found for a specific customer
     int choice;
     bool exit = false;
 
-    int cSize, oSize, tSize; // to keep track of # of existing records
+    int eList, cSize, oSize, tSize; // to keep track of # of existing records
 
     // read customers.txt and parse the data
-    vector<vector < string>> data, rainbow, transaction, order;
+    vector<vector < string>> data, rainbow, transaction, order, employee;
     data = getCustomerData("customers", 7);
     rainbow = getCustomerData("rainbowList", 1);
-    transaction = getCustomerData("transactions", 2);
+    transaction = getCustomerData("transactions", 3);
     order = getCustomerData("orders", 4);
-    //    string s;
-    //    cout << "Parse Data? (y/n)" << endl;
-    //    cin >> s;
-    //
-    //    //user edits bad data
-    //    if (s.compare("y") == 0) {
-    //        data = getData(data);
-    //        data = rm_spaces(data, 4);
-    //        data = rm_spaces(data, 3);
-    //        data = rm_nonNum(data, 5);
-    //        cout << "Parsing through data..." << endl;
-    //        bad_data(data);
-    //        cout << "Possible bad data saved to badData.csv file" << endl;
-    //        cout << "Fix the bad data now and resave data. Press any key, then enter to continue" << endl;
-    //        cout << ("note: type 'delete' into an element to delete that entire row.") << endl;
-    //        cin >> s;
-    //        data = fix_bad(data);
-    //        save(data, "fixed_data");
-    //    } else { //uses last saved edited badData file
-    //
-    //        //data = getData(data);
-    //        //data = rm_spaces(data, 4);
-    //        //data = rm_spaces(data, 3);
-    //        //data = rm_nonNum(data, 5);
-    //        //data = fix_bad(data);
-    //        //save(data, "fixed_data");
-    //
-    //        data = getCustomerData("customers",7);
-    //    }
-    //    cout << "\n\n\n\n\n";
+    employee = getCustomerData("salesStaff", 4);
 
     // translate the data into Customer objects and push them into the customerList vector
     for (int i = 0; (unsigned) i < data.size(); i++) {
@@ -142,8 +120,21 @@ int main(int argc, char** argv) {
     // translate the data into transaction objects and push into transactionList vector
     for (int i = 0; (unsigned) i < transaction.size(); i++) {
 
-        newTransaction = new Transaction(transaction[i][0], transaction[i][1]);
+        newTransaction = new Transaction(transaction[i][0], transaction[i][1], transaction[i][2]);
         transactionList.push_back(newTransaction);
+    }
+    
+    for(int i = 0; (unsigned) i < employee.size(); i++) {
+        if(employee[i][0] == "Sales")
+            newEmployee = new Sales(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
+        if(employee[i][0] == "SuperSales")
+            newEmployee = new SuperSales(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
+        if(employee[i][0] == "Supervisor")
+            newEmployee = new Supervisors(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
+        if(employee[i][0] == "Manager")
+            newEmployee = new Managers(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
+
+        employeeList.push_back(newEmployee);
     }
 
     //push rainbow data to queue
@@ -155,6 +146,7 @@ int main(int argc, char** argv) {
     tSize = transactionList.size();
     oSize = orderList.size();
     cSize = customerList.size();
+    eList = employeeList.size();
 
 
     // vector is used to store the options that the user can choose
@@ -164,7 +156,8 @@ int main(int argc, char** argv) {
     options.push_back("(3) Search for a customer by ID number");
     options.push_back("(4) Customer Sale");
     options.push_back("(5) Rainbow Tribble");
-    options.push_back("(6) Exit");
+    options.push_back("(6) Get Employee Sales Report");
+    options.push_back("(7) Exit");
 
 
     // Vector used to store tribble prices
@@ -177,8 +170,8 @@ int main(int argc, char** argv) {
 
     // to store the user input
     string ID, fname, lname, street, city, state, zip;
-    string orderID, transactionID, date, quantity;
-    int quant;
+    string orderID, transactionID, date, quantity, employeeID;
+    int quant, pos;
     float amountPaid;
 
     while (!exit) {
@@ -199,7 +192,8 @@ int main(int argc, char** argv) {
          * case 3 - user is prompted to look up a customer by ID
          * case 4 - user prompted for customer sale
          * case 5 - user prompted to add customer to rainbow tribble queue
-         * case 6 - exit
+         * case 6 - Sales Report 
+         * case 7 - exit
          */
         switch (choice) {
             case 1: // User is prompted to add new customer @Author Brandon Youngquist
@@ -342,7 +336,8 @@ int main(int argc, char** argv) {
 
                         /// generate new transaction
                         transactionID = generateTransactionID(transactionList);
-                        newTransaction = new Transaction(ID, transactionID);
+                        employeeID = "00_TO_DO_00";
+                        newTransaction = new Transaction(ID, employeeID, transactionID);
                         transactionList.push_back(newTransaction);
 
                         quant = s_to_i(quantity);
@@ -415,7 +410,8 @@ int main(int argc, char** argv) {
                         
                         // Generate new transaction
                         transactionID = generateTransactionID(transactionList);
-                        newTransaction = new Transaction(rainbowList.front(), transactionID);
+                        employeeID = "00_TO_DO_00";
+                        newTransaction = new Transaction(rainbowList.front(), employeeID, transactionID);
                         transactionList.push_back(newTransaction);
                         
                         // Generate new order
@@ -433,7 +429,22 @@ int main(int argc, char** argv) {
                 }
                 break;
 
-            case 6: // Exit
+            case 6:
+                cout << "Enter Employee's ID: ";
+                cin >> ID;
+                
+                pos = searchID(employeeList, ID);
+                if(pos == -1)
+                {
+                    cout << "Invalid entry" << endl;
+                    break;
+                }
+                cout << employeeList[pos]->getName() << ", " << employeeList[pos]->getTitle() << endl
+                        << "Total Sales: " << employeeList[pos]->getSales(transactionList, orderList)
+                        << "\nTotal Commission: " << employeeList[pos]->getComission(employeeList, transactionList, orderList);
+                break;
+                
+            case 7: // Exit
                 updateRecordFile(customerList, cSize);
                 updateOrders(orderList, oSize);
                 updateTransactions(transactionList, tSize);
