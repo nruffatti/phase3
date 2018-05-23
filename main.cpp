@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
     transaction = getCustomerData("transactions", 3);
     order = getCustomerData("orders", 4);
     employee = getCustomerData("salesStaff", 4);
-
+  
     // translate the data into Customer objects and push them into the customerList vector
     for (int i = 0; (unsigned) i < data.size(); i++) {
         newCustomer = new Customer(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
@@ -354,7 +354,7 @@ int main(int argc, char** argv) {
 
                         /// generate new transaction
                         transactionID = generateTransactionID(transactionList);
-                        employeeID = "00_TO_DO_00";
+                        employeeID = "000000";
                         newTransaction = new Transaction(ID, employeeID, transactionID);
                         transactionList.push_back(newTransaction);
 
@@ -428,7 +428,7 @@ int main(int argc, char** argv) {
 
                         // Generate new transaction
                         transactionID = generateTransactionID(transactionList);
-                        employeeID = "00_TO_DO_00";
+                        employeeID = "000000";
                         newTransaction = new Transaction(rainbowList.front(), employeeID, transactionID);
                         transactionList.push_back(newTransaction);
 
