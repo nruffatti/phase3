@@ -67,6 +67,24 @@ void printCustomerOrder(vector<Order *>& orderList, vector<string>& index) {
 
 }
 
+void printSalesReport(string name, string title, float sales, float commission) {
+
+    cout << left << setw(20) << setfill(' ') << name;
+    cout << left << setw(11) << setfill(' ') << title;
+    cout << "$" << left << setw(8) << setfill(' ') << fixed << setprecision(2) << sales;
+    cout << "$" << left << setw(8) << setfill(' ') << fixed << setprecision(2) << commission << endl;
+
+}
+
+void printSalesHeading() {
+    cout << left << setw(20) << setfill(' ') << "Name";
+    cout << left << setw(11) << setfill(' ') << "Title";
+    cout << left << setw(8) << setfill(' ') << "Sales";
+    cout << left << setw(8) << setfill(' ') << "Commission" << endl;
+    cout << setw(50) << setfill('=') << "=" << endl;
+
+}
+
 void printInvalid() {
     cout << "Not valid input. Try again!" << endl;
 
@@ -123,15 +141,15 @@ int main(int argc, char** argv) {
         newTransaction = new Transaction(transaction[i][0], transaction[i][1], transaction[i][2]);
         transactionList.push_back(newTransaction);
     }
-    
-    for(int i = 0; (unsigned) i < employee.size(); i++) {
-        if(employee[i][0] == "Sales")
+
+    for (int i = 0; (unsigned) i < employee.size(); i++) {
+        if (employee[i][0] == "Sales")
             newEmployee = new Sales(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
-        if(employee[i][0] == "SuperSales")
+        if (employee[i][0] == "SuperSales")
             newEmployee = new SuperSales(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
-        if(employee[i][0] == "Supervisor")
+        if (employee[i][0] == "Supervisor")
             newEmployee = new Supervisors(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
-        if(employee[i][0] == "Manager")
+        if (employee[i][0] == "Manager")
             newEmployee = new Managers(employee[i][0], employee[i][1], employee[i][2], employee[i][3]);
 
         employeeList.push_back(newEmployee);
@@ -402,23 +420,23 @@ int main(int argc, char** argv) {
                         }
                         cout << "\nSold Rainbow Tribble(s) to customer " << rainbowList.front()
                                 << endl;
-                        
+
                         // find customer record for printing sale confirmation
                         foundList = searchID(customerList, rainbowList.front());
                         // create timestamp
                         date = generateTimeStamp();
-                        
+
                         // Generate new transaction
                         transactionID = generateTransactionID(transactionList);
                         employeeID = "00_TO_DO_00";
                         newTransaction = new Transaction(rainbowList.front(), employeeID, transactionID);
                         transactionList.push_back(newTransaction);
-                        
+
                         // Generate new order
                         orderID = transactionID;
                         newOrder = new Order(orderID, date, 1, prices.at(0));
                         orderList.push_back(newOrder);
-                        
+
                         // print sale confirmation
                         printSaleConfirmation(customerList[foundList[0]]->getFullName(), 1, prices.at(0), date);
                         rainbowList.pop_front();
@@ -430,20 +448,54 @@ int main(int argc, char** argv) {
                 break;
 
             case 6:
-                cout << "Enter Employee's ID: ";
-                cin >> ID;
-                
-                pos = searchID(employeeList, ID);
-                if(pos == -1)
-                {
-                    cout << "Invalid entry" << endl;
-                    break;
+                cout << "(1) Get Employee Sales Report by ID\n";
+                cout << "(2) Get All Employees Sales Report\n";
+                cout << "(3) Return to Main Menu\n";
+                cout << "\nEnter an above number to continue: ";
+
+                cin >> choice;
+                switch (choice) {
+                    case 1:
+                        cout << "Enter Employee's ID: ";
+                        cin >> ID;
+
+                        // lookup for the input id in the list
+                        pos = searchID(employeeList, ID);
+                        
+                        // if not found
+                        if (pos == -1) {
+                            cout << "Invalid entry" << endl;
+                            break;
+                        }
+                        // print sales report
+                        printSalesHeading();
+                        printSalesReport(employeeList[pos]->getName(),
+                                employeeList[pos]->getTitle(),
+                                employeeList[pos]->getSales(transactionList, orderList),
+                                employeeList[pos]->
+                                getComission(employeeList, transactionList, orderList));
+                        break;
+                    case 2:
+                        // print sales report for each employee
+                        printSalesHeading();
+                        for (int i = 0; i < employeeList.size(); i++) {
+                            printSalesReport(employeeList[i]->getName(),
+                                employeeList[i]->getTitle(),
+                                employeeList[i]->getSales(transactionList, orderList),
+                                employeeList[i]->
+                                getComission(employeeList, transactionList, orderList));
+                        }
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        printInvalid();
+                        break;
                 }
-                cout << employeeList[pos]->getName() << ", " << employeeList[pos]->getTitle() << endl
-                        << "Total Sales: " << employeeList[pos]->getSales(transactionList, orderList)
-                        << "\nTotal Commission: " << employeeList[pos]->getComission(employeeList, transactionList, orderList);
                 break;
-                
+
+
+
             case 7: // Exit
                 updateRecordFile(customerList, cSize);
                 updateOrders(orderList, oSize);
