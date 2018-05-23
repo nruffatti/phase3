@@ -131,7 +131,8 @@ void updateTransactions(vector<Transaction *>& list, int size) {
     // append only newly added records
     for (int i = size; i < list.size(); i++) {
         outfile << list[i]->getCustomerID() << ";"
-                << list[i]->getOrderID() << endl;
+                << list[i]->getEmployeeID() <<  ";" << 
+                list[i]->getOrderID() << endl;
     }
     outfile.close();
 }
@@ -143,10 +144,10 @@ void updateOrders(vector<Order *>& list, int size) {
 
     // append only newly added records
     for (int i = size; i < list.size(); i++) {
-        outfile << list[i]->getOrderID() << ";"
+        outfile << endl << list[i]->getOrderID() << ";"
                 << list[i]->getDate() << ";"
                 << list[i]->getQuantity() << ";"
-                << fixed << setprecision(2) << list[i]->getAmountPaid() << endl;
+                << fixed << setprecision(2) << list[i]->getAmountPaid();
     }
     outfile.close();
 }
