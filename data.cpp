@@ -83,9 +83,16 @@ string generateID(vector<Customer *>& customerList) {
 string generateTransactionID(vector<Transaction *> list) {
     string r;
     stringstream ts;
-    
-    int num = list.size();
-    num++;
+    int num;
+    if (list.empty())
+        num = 1;
+    else {
+        ts << list.back()->getOrderID();
+        ts >> num;
+        num++;
+        ts.clear();
+        ts.str("");
+    }
     ts << num;
     r = ts.str();
     
@@ -97,6 +104,7 @@ string generateTransactionID(vector<Transaction *> list) {
     }
     
     ID += r;
+    cout << "ID: " << ID << endl;
     return ID;
 }
 
