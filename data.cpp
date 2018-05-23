@@ -104,7 +104,7 @@ string generateTransactionID(vector<Transaction *> list) {
     }
     
     ID += r;
-    cout << "ID: " << ID << endl;
+    
     return ID;
 }
 
