@@ -38,6 +38,14 @@ int s_to_i(string str) {
     return num;
 }
 
+float s_to_f(string str) {
+    istringstream buffer(str);
+    float num;
+    buffer >> num;
+
+    return num;
+}
+
 void printSaleConfirmation(string name, int qty, float total, string date) {
     cout << "\nSale Confirmation" << endl;
     cout << "=================" << endl;
@@ -131,7 +139,7 @@ int main(int argc, char** argv) {
 
     // translate the data into order objects and push into orderList vector
     for (int i = 0; (unsigned) i < order.size(); i++) {
-        newOrder = new Order(order[i][0], order[i][1], s_to_i(order[i][2]), s_to_i(order[i][3]));
+        newOrder = new Order(order[i][0], order[i][1], s_to_i(order[i][2]), s_to_f(order[i][3]));
         orderList.push_back(newOrder);
     }
 
